@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">CodeStar</string>
+    <string name="first_github_user">First Github User</string>
+    <string name="second_github_user">Second Github User</string>
+    <string name="text_versus">Versus</string>
+    <string name="button_compare_users">Go!</string>
+</resources>
