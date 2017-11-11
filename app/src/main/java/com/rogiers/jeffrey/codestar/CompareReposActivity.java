@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,13 +41,14 @@ public class CompareReposActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compare_repos);
-
         Intent intent = getIntent();
-        mUsers = intent.getStringArrayListExtra(GITHUB_USER_LIST);
 
+        mUsers = intent.getStringArrayListExtra(GITHUB_USER_LIST);
         for(String user : mUsers){
             Log.d(TAG, "Found user: " + user);
         }
+
+        setTitle(TextUtils.join(" vs. ", mUsers));
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -77,8 +79,7 @@ public class CompareReposActivity extends AppCompatActivity {
         }
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_compare_repos, container, false);
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
             textView.setText(getString(R.string.section_format, getArguments().getString(ARG_SECTION_NUMBER)));
