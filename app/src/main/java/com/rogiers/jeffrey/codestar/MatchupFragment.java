@@ -42,10 +42,14 @@ public class MatchupFragment extends Fragment {
                 if(!validateUsername(mUser1) || !validateUsername(mUser2)){
                     return;
                 }
+                mCompareUsers.setClickable(false);
 
                 ArrayList<String> users = new ArrayList<>();
                 users.add(mUser1.getText().toString());
                 users.add(mUser2.getText().toString());
+
+                Intent compareRepoIntent = CompareReposActivity.newIntent(getActivity(), users);
+                startActivity(compareRepoIntent);
             }
         });
         return v;
