@@ -7,4 +7,6 @@
     <string name="invalid_username">Invalid username</string>
     <string name="section_format">Hello World from section: %1$s</string>
     <string name="title_activity_compare_repos">Compare Github Users</string>
+    <string name="match_result_draw">Draw!</string>
+    <string name="match_result_winner_template">{0} Wins!</string>
 </resources>
