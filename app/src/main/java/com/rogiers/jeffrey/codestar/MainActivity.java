@@ -9,7 +9,7 @@ import android.util.Log;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "[MainActivity]";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +21,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void switchToFragment(Fragment fragment){
-        Log.d(TAG, "Fragment changing to " + fragment.getClass().getSimpleName());
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_container, fragment, fragment.getClass().toString());
         ft.commit();

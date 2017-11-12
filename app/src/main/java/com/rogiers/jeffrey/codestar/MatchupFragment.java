@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
  */
 public class MatchupFragment extends Fragment {
 
-    private static final String TAG = "MatchupFragment";
+    private static final String TAG = "[MatchupFragment]";
 
     private EditText mUser1;
     private EditText mUser2;
@@ -72,5 +72,11 @@ public class MatchupFragment extends Fragment {
         }
 
         return true;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mCompareUsers.setClickable(true);
     }
 }

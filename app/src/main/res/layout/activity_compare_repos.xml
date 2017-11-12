@@ -41,7 +41,7 @@
                     app:layout_constraintHorizontal_bias="0.20"
                     android:src="@drawable/facebat"
                     app:civ_border_width="@dimen/profile_photo_border_thickness"
-                    app:civ_border_color="@color/profile_photo_border_color"
+                    app:civ_border_color="@color/colorPrimaryDark"
                     />
 
                 <de.hdodenhof.circleimageview.CircleImageView
@@ -54,7 +54,7 @@
                     app:layout_constraintHorizontal_bias="0.80"
                     android:src="@drawable/facebat"
                     app:civ_border_width="@dimen/profile_photo_border_thickness"
-                    app:civ_border_color="@color/profile_photo_border_color"
+                    app:civ_border_color="@color/colorPrimaryDark"
                     />
 
                 <!--http://deathbattlefanon.wikia.com/wiki/File:Versus.png-->
