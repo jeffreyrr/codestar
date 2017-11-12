@@ -18,7 +18,7 @@
         </activity>
         <activity
             android:name=".CompareReposActivity"
-            android:label="@string/title_activity_compare_repos"
+            android:label=""
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -26,5 +26,5 @@
                 android:value="com.rogiers.jeffrey.codestar.MainActivity"/>
         </activity>
     </application>
-
+    <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>

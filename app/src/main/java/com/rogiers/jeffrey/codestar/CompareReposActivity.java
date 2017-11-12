@@ -2,24 +2,26 @@ package com.rogiers.jeffrey.codestar;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CompareReposActivity extends AppCompatActivity {
 
@@ -44,11 +46,6 @@ public class CompareReposActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         mUsers = intent.getStringArrayListExtra(GITHUB_USER_LIST);
-        for(String user : mUsers){
-            Log.d(TAG, "Found user: " + user);
-        }
-
-        setTitle(TextUtils.join(" vs. ", mUsers));
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -64,6 +61,21 @@ public class CompareReposActivity extends AppCompatActivity {
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+
+        Resources res = getResources();
+        for(int i=0; i < mUsers.size(); i++){
+            Log.d(TAG, "Found " + i);
+            int profilePhotoId = res.getIdentifier("photo_user_"+(i+1), "id", getPackageName());
+            if(profilePhotoId == 0) {
+                Log.d(TAG, "Couldn't find photo placeholder " + i);
+                break;
+            }
+
+            Picasso.with(getApplicationContext())
+                    .load("https://github.com/" + mUsers.get(i) + ".png")
+                    .placeholder(R.drawable.facebat)
+                    .into((CircleImageView) findViewById(profilePhotoId));
+        }
     }
 
     public static class PlaceholderFragment extends Fragment {

@@ -14,7 +14,6 @@
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/appbar_padding_top"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.design.widget.CollapsingToolbarLayout
@@ -36,9 +35,10 @@
                     android:id="@+id/photo_user_1"
                     android:layout_width="@dimen/profile_photo_size"
                     android:layout_height="@dimen/profile_photo_size"
-                    android:layout_marginLeft="@dimen/profile_photo_centering_margin"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_bias="0.20"
                     android:src="@drawable/facebat"
                     app:civ_border_width="@dimen/profile_photo_border_thickness"
                     app:civ_border_color="@color/profile_photo_border_color"
@@ -48,9 +48,10 @@
                     android:id="@+id/photo_user_2"
                     android:layout_width="@dimen/profile_photo_size"
                     android:layout_height="@dimen/profile_photo_size"
-                    android:layout_marginRight="@dimen/profile_photo_centering_margin"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_bias="0.80"
                     android:src="@drawable/facebat"
                     app:civ_border_width="@dimen/profile_photo_border_thickness"
                     app:civ_border_color="@color/profile_photo_border_color"
