@@ -27,6 +27,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import nl.dionsegijn.konfetti.KonfettiView;
+import nl.dionsegijn.konfetti.models.Shape;
+import nl.dionsegijn.konfetti.models.Size;
 
 public class CompareReposActivity extends AppCompatActivity implements RepositoryFragment.OnListFragmentInteractionListener {
 
@@ -35,6 +38,7 @@ public class CompareReposActivity extends AppCompatActivity implements Repositor
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
+    private KonfettiView mKonfettiView;
 
     private ArrayList<String> mUsers;
     private HashMap<String, Integer> mUserStars = new HashMap();
@@ -67,6 +71,8 @@ public class CompareReposActivity extends AppCompatActivity implements Repositor
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+
+        mKonfettiView = findViewById(R.id.viewKonfetti);
 
         if(mUsers.size() >= 2) {
             CircleImageView imageView1 = findViewById(R.id.photo_user_1);
@@ -137,6 +143,18 @@ public class CompareReposActivity extends AppCompatActivity implements Repositor
             profileImageView.setBorderColor(getResources().getColor(R.color.colorAccent));
             winnerText = MessageFormat.format(
                     getString(R.string.match_result_winner_template), mUsers.get(winnerIndex));
+
+            mKonfettiView.build()
+                    .addColors(getResources().getColor(R.color.colorAccent))
+                    .setDirection(0.0, 359.0)
+                    .setSpeed(1f, 5f)
+                    .setFadeOutEnabled(true)
+                    .setTimeToLive(2000L)
+                    .addShapes(Shape.RECT, Shape.CIRCLE)
+                    .addSizes(new Size(12, 5f))
+                    .setPosition(profileImageView.getLeft() + (profileImageView.getWidth() / 2), null,
+                            profileImageView.getTop() + (profileImageView.getHeight() / 2), null)
+                    .stream(200, 2000L);
         }
 
         setTitle(winnerText);
@@ -147,7 +165,7 @@ public class CompareReposActivity extends AppCompatActivity implements Repositor
 
         CustomTabsIntent customTabsIntent = new CustomTabsIntent.Builder()
                 .addDefaultShareMenuItem()
-                .setToolbarColor(this.getResources().getColor(R.color.colorPrimary))
+                .setToolbarColor(getResources().getColor(R.color.colorPrimary))
                 .setShowTitle(true)
                 .build();
 
