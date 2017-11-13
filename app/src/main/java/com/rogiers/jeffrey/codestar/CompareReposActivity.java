@@ -151,7 +151,8 @@ public class CompareReposActivity extends AppCompatActivity implements Repositor
 
             KonfettiView konfettiView = findViewById(R.id.viewKonfetti);
             konfettiView.build()
-                    .addColors(getResources().getColor(R.color.colorAccent))
+                    .addColors(getResources().getColor(R.color.colorAccent),
+                            getResources().getColor(R.color.colorPrimaryDark))
                     .setDirection(0.0, 359.0)
                     .setSpeed(1f, 5f)
                     .setFadeOutEnabled(true)
