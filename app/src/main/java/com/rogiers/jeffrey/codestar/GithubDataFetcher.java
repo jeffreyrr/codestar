@@ -30,18 +30,17 @@ public class GithubDataFetcher extends AsyncTask<String, Void, Void> {
         RepositoryService service = new RepositoryService();
         try {
             repositories = service.getRepositories(user);
+            // sort by stars descending
+            Collections.sort(repositories, new Comparator<Repository>() {
+                @Override
+                public int compare(Repository o1, Repository o2) {
+                    return o2.getWatchers() - o1.getWatchers();
+                }
+            });
         } catch (IOException e) {
             repositories = null;
             e.printStackTrace();
         }
-
-        // sort by stars descending
-        Collections.sort(repositories, new Comparator<Repository>() {
-            @Override
-            public int compare(Repository o1, Repository o2) {
-                return o2.getWatchers() - o1.getWatchers();
-            }
-        });
 
         Event.UserRepositories event = new Event.UserRepositories(user, repositories);
         BusUtil.postOnMain(BusProvider.getBus(), event);
