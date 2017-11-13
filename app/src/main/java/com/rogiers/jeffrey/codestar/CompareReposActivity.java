@@ -126,8 +126,8 @@ public class CompareReposActivity extends AppCompatActivity implements Repositor
         int firstUserIndex = 0;
         int secondUserIndex = 1;
 
-        int firstUserStars = stars.get(users.get(firstUserIndex));
-        int secondUserStars = stars.get(users.get(secondUserIndex));
+        Integer firstUserStars = stars.get(users.get(firstUserIndex));
+        Integer secondUserStars = stars.get(users.get(secondUserIndex));
 
         if (firstUserStars > secondUserStars) {
             return firstUserIndex;
