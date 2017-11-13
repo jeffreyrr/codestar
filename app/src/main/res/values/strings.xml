@@ -2,7 +2,6 @@
     <string name="app_name">CodeStar</string>
     <string name="first_github_user">Github User 1</string>
     <string name="second_github_user">Github User 2</string>
-    <string name="text_versus">Versus</string>
     <string name="button_compare_users">Go!</string>
     <string name="invalid_username">Invalid username</string>
     <string name="section_format">Hello World from section: %1$s</string>

@@ -20,12 +20,11 @@
         app:layout_constraintRight_toRightOf="parent"
         />
 
-    <TextView
+    <ImageView
         android:id="@+id/versus"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/text_versus"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/versus"
         app:layout_constraintTop_toBottomOf="@id/text_user_1"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
