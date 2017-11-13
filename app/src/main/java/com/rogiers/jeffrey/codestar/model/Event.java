@@ -1,4 +1,4 @@
-package com.rogiers.jeffrey.codestar;
+package com.rogiers.jeffrey.codestar.model;
 
 import org.eclipse.egit.github.core.Repository;
 import org.json.JSONArray;

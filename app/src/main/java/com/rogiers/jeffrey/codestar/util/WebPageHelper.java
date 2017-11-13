@@ -1,8 +1,10 @@
-package com.rogiers.jeffrey.codestar;
+package com.rogiers.jeffrey.codestar.util;
 
 import android.content.Context;
 import android.net.Uri;
 import android.support.customtabs.CustomTabsIntent;
+
+import com.rogiers.jeffrey.codestar.R;
 
 public class WebPageHelper {
 

@@ -9,9 +9,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.rogiers.jeffrey.codestar.util.StringUtil;
+
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -56,27 +56,11 @@ public class MatchupFragment extends Fragment {
     }
 
     private boolean validateUsername(EditText editText){
-        if(!validateGithubUsername(editText.getText().toString())){
+        if(!StringUtil.validateGithubUsername(editText.getText().toString())){
             editText.setError(getString(R.string.invalid_username));
             return false;
         }
         return true;
-    }
-
-    /*
-     * Username requirements according to Github:
-     * Username may only contain alphanumeric characters or single hyphens,
-     * and cannot begin or end with a hyphen.
-     * This is a simplified version of the requirements that only focuses on
-     * the character set in order to provide useful feedback.
-     */
-    public boolean validateGithubUsername(String text) {
-        String SIMPLE_USERNAME_PATTERN = "^[A-Za-z0-9-]+$";
-
-        Pattern pattern = Pattern.compile(SIMPLE_USERNAME_PATTERN);
-        Matcher matcher = pattern.matcher(text);
-
-        return matcher.matches();
     }
 
     @Override

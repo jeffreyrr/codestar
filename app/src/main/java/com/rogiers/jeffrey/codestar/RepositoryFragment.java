@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.rogiers.jeffrey.codestar.model.Event;
 import com.rogiers.jeffrey.codestar.util.BusProvider;
 import com.squareup.otto.Subscribe;
 

@@ -14,7 +14,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.rogiers.jeffrey.codestar.model.Event;
 import com.rogiers.jeffrey.codestar.util.BusProvider;
+import com.rogiers.jeffrey.codestar.util.WebPageHelper;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 
@@ -30,8 +32,8 @@ import nl.dionsegijn.konfetti.KonfettiView;
 import nl.dionsegijn.konfetti.models.Shape;
 import nl.dionsegijn.konfetti.models.Size;
 
-import static com.rogiers.jeffrey.codestar.WebPageHelper.openGithubUserPage;
-import static com.rogiers.jeffrey.codestar.WebPageHelper.openPage;
+import static com.rogiers.jeffrey.codestar.util.WebPageHelper.openGithubUserPage;
+import static com.rogiers.jeffrey.codestar.util.WebPageHelper.openPage;
 
 public class CompareReposActivity extends AppCompatActivity implements RepositoryFragment.OnListFragmentInteractionListener {
 

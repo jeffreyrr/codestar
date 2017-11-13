@@ -2,6 +2,7 @@ package com.rogiers.jeffrey.codestar;
 
 import android.os.AsyncTask;
 
+import com.rogiers.jeffrey.codestar.model.Event;
 import com.rogiers.jeffrey.codestar.util.BusProvider;
 import com.rogiers.jeffrey.codestar.util.BusUtil;
 
