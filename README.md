@@ -7,9 +7,8 @@ Clicking the users profile photo will take you to their github user page.
 
 The users' repositories are also listed (along with the star count) and is clickable for easy viewing.
 
-```
-Things missing:
-State management: Loading, Empty, Error
-Preloading Profile Images
-Tests
-```
+## Things missing:
+* State management: Loading, Empty, Error
+* Supporting screen rotation for the input screen
+* Preloading Profile Images
+* Tests
