@@ -7,22 +7,20 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.rogiers.jeffrey.codestar.RepositoryFragment.OnListFragmentInteractionListener;
-import com.rogiers.jeffrey.codestar.dummy.DummyContent.DummyItem;
+
+import org.eclipse.egit.github.core.Repository;
 
 import java.util.List;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
- */
-public class MyRepositoryRecyclerViewAdapter extends RecyclerView.Adapter<MyRepositoryRecyclerViewAdapter.ViewHolder> {
+public class RepositoryRecyclerViewAdapter extends RecyclerView.Adapter<RepositoryRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
+    private String mUser;
+    private List<Repository> mRepositories;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyRepositoryRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
-        mValues = items;
+    public RepositoryRecyclerViewAdapter(String user, List<Repository> repositories, OnListFragmentInteractionListener listener) {
+        mUser = user;
+        mRepositories = repositories;
         mListener = listener;
     }
 
@@ -35,9 +33,9 @@ public class MyRepositoryRecyclerViewAdapter extends RecyclerView.Adapter<MyRepo
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        holder.mItem = mRepositories.get(position);
+        holder.mIdView.setText("" + mRepositories.get(position).getWatchers());
+        holder.mContentView.setText(mRepositories.get(position).getName());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,14 +51,19 @@ public class MyRepositoryRecyclerViewAdapter extends RecyclerView.Adapter<MyRepo
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return mRepositories.size();
+    }
+
+    public void updateRepositoriesList(List<Repository> repositories){
+        mRepositories = repositories;
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public DummyItem mItem;
+        public Repository mItem;
 
         public ViewHolder(View view) {
             super(view);

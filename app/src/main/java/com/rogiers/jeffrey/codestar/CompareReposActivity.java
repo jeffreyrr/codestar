@@ -3,8 +3,6 @@ package com.rogiers.jeffrey.codestar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.net.Uri;
-import android.support.customtabs.CustomTabsIntent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v7.app.AppCompatActivity;
@@ -16,11 +14,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import com.rogiers.jeffrey.codestar.dummy.DummyContent;
 import com.rogiers.jeffrey.codestar.util.BusProvider;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 
+
+import org.eclipse.egit.github.core.Repository;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -31,6 +30,9 @@ import nl.dionsegijn.konfetti.KonfettiView;
 import nl.dionsegijn.konfetti.models.Shape;
 import nl.dionsegijn.konfetti.models.Size;
 
+import static com.rogiers.jeffrey.codestar.WebPageHelper.openGithubUserPage;
+import static com.rogiers.jeffrey.codestar.WebPageHelper.openPage;
+
 public class CompareReposActivity extends AppCompatActivity implements RepositoryFragment.OnListFragmentInteractionListener {
 
     private static final String TAG = "[CompareReposActivity]";
@@ -38,7 +40,6 @@ public class CompareReposActivity extends AppCompatActivity implements Repositor
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
-    private KonfettiView mKonfettiView;
 
     private ArrayList<String> mUsers;
     private HashMap<String, Integer> mUserStars = new HashMap();
@@ -72,14 +73,12 @@ public class CompareReposActivity extends AppCompatActivity implements Repositor
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
-        mKonfettiView = findViewById(R.id.viewKonfetti);
-
         if(mUsers.size() >= 2) {
             CircleImageView imageView1 = findViewById(R.id.photo_user_1);
             imageView1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    openGithubPage(mUsers.get(0));
+                    openGithubUserPage(getApplicationContext(), mUsers.get(0));
                 }
             });
 
@@ -87,7 +86,7 @@ public class CompareReposActivity extends AppCompatActivity implements Repositor
             imageView2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    openGithubPage(mUsers.get(1));
+                    openGithubUserPage(getApplicationContext(), mUsers.get(1));
                 }
             });
         }
@@ -105,7 +104,7 @@ public class CompareReposActivity extends AppCompatActivity implements Repositor
             int resProfileImageView = getProfilePhotoImageView(i);
             if(resProfileImageView > 0) {
                 Picasso.with(getApplicationContext())
-                        .load("https://github.com/" + tmpUser + ".png")
+                        .load(WebPageHelper.GITHUB_BASE_URL + tmpUser + ".png")
                         .placeholder(R.drawable.facebat)
                         .into((CircleImageView) findViewById(resProfileImageView));
             }
@@ -115,36 +114,43 @@ public class CompareReposActivity extends AppCompatActivity implements Repositor
     @Subscribe
     public void onProcessMessage(Event.UserRepositories event){
         mUserStars.put(event.getUser(), event.getStars());
-
-        if(mUserStars.size() == 2){
-            findTheWinner();
-        }
+        crownWinner(findWinner(mUsers, mUserStars));
     }
 
-    private void findTheWinner() {
-        Integer winnerIndex = null;
+    public static Integer findWinner(ArrayList<String> users, HashMap<String, Integer> stars) {
+        if(stars.size() < 2) {
+            // minimum HashMap size requirements not met
+            return -2;
+        }
+
         int firstUserIndex = 0;
         int secondUserIndex = 1;
 
+        int firstUserStars = stars.get(users.get(firstUserIndex));
+        int secondUserStars = stars.get(users.get(secondUserIndex));
+
+        if (firstUserStars > secondUserStars) {
+            return firstUserIndex;
+        } else if (secondUserStars > firstUserStars) {
+            return secondUserIndex;
+        }
+
+        // Draw
+        return -1;
+    }
+
+    private void crownWinner(Integer winnerIndex){
         CircleImageView profileImageView;
         String winnerText = getString(R.string.match_result_draw);
 
-        int firstUserStars = mUserStars.get(mUsers.get(firstUserIndex));
-        int secondUserStars = mUserStars.get(mUsers.get(secondUserIndex));
-
-        if(firstUserStars > secondUserStars){
-            winnerIndex = firstUserIndex;
-        } else if (secondUserStars > firstUserStars) {
-            winnerIndex = secondUserIndex;
-        }
-
-        if(winnerIndex != null){
+        if(winnerIndex >= 0){
             profileImageView = findViewById(getProfilePhotoImageView(winnerIndex));
             profileImageView.setBorderColor(getResources().getColor(R.color.colorAccent));
             winnerText = MessageFormat.format(
                     getString(R.string.match_result_winner_template), mUsers.get(winnerIndex));
 
-            mKonfettiView.build()
+            KonfettiView konfettiView = findViewById(R.id.viewKonfetti);
+            konfettiView.build()
                     .addColors(getResources().getColor(R.color.colorAccent))
                     .setDirection(0.0, 359.0)
                     .setSpeed(1f, 5f)
@@ -157,24 +163,15 @@ public class CompareReposActivity extends AppCompatActivity implements Repositor
                     .stream(200, 2000L);
         }
 
-        setTitle(winnerText);
-    }
-
-    public void openGithubPage(String user){
-        final String github_url = "http://github.com/";
-
-        CustomTabsIntent customTabsIntent = new CustomTabsIntent.Builder()
-                .addDefaultShareMenuItem()
-                .setToolbarColor(getResources().getColor(R.color.colorPrimary))
-                .setShowTitle(true)
-                .build();
-
-        customTabsIntent.launchUrl(this, Uri.parse(github_url + user));
+        if(winnerIndex >= -1) {
+            setTitle(winnerText);
+        }
     }
 
     @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
-        Log.d(TAG, "Got a click!");
+    public void onListFragmentInteraction(Repository repository) {
+        Log.d(TAG, "Repository Clicked: " + repository.getHtmlUrl());
+        openPage(getApplicationContext(), repository.getHtmlUrl().toString());
     }
 
     private int getProfilePhotoImageView(int i) {
@@ -189,9 +186,10 @@ public class CompareReposActivity extends AppCompatActivity implements Repositor
     }
 
     @Override
-    protected void onPostResume() {
-        super.onPostResume();
+    protected void onResume() {
+        super.onResume();
         BusProvider.getBus().register(this);
+        crownWinner(findWinner(mUsers, mUserStars));
     }
 
     public class SectionsPagerAdapter extends FragmentStatePagerAdapter {

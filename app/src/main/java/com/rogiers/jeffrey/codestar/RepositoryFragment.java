@@ -11,17 +11,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.rogiers.jeffrey.codestar.dummy.DummyContent;
-import com.rogiers.jeffrey.codestar.dummy.DummyContent.DummyItem;
 import com.rogiers.jeffrey.codestar.util.BusProvider;
 import com.squareup.otto.Subscribe;
 
 import org.eclipse.egit.github.core.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A fragment representing a list of Items.
+ * A fragment representing a list of Github Repositories.
  * <p/>
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
@@ -33,6 +32,8 @@ public class RepositoryFragment extends Fragment {
 
     private int mColumnCount = 1;
     private String mUser;
+    private List<Repository> mRepositories;
+    private RepositoryRecyclerViewAdapter mAdapter;
 
     private OnListFragmentInteractionListener mListener;
 
@@ -44,22 +45,15 @@ public class RepositoryFragment extends Fragment {
         return fragment;
     }
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public RepositoryFragment() {
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mUser = getArguments().getString(ARG_USER_NAME);
+        mRepositories = new ArrayList<>();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_repository_list, container, false);
 
         // Set the adapter
@@ -71,7 +65,8 @@ public class RepositoryFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyRepositoryRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            mAdapter = new RepositoryRecyclerViewAdapter(mUser, mRepositories, mListener);
+            recyclerView.setAdapter(mAdapter);
         }
         return view;
     }
@@ -79,8 +74,12 @@ public class RepositoryFragment extends Fragment {
     @Subscribe
     public void onProcessMessage(Event.UserRepositories event){
         String user = event.getUser();
-        List<Repository> repositories = event.getRepositories();
-        Log.d(TAG, user + " has " + repositories.size() + " repositories");
+        if(user == mUser) {
+            List<Repository> repositories = event.getRepositories();
+            // notify adapter of changes
+            mAdapter.updateRepositoriesList(repositories);
+            Log.d(TAG, user + " has " + repositories.size() + " repositories");
+        }
     }
 
     @Override
@@ -89,8 +88,7 @@ public class RepositoryFragment extends Fragment {
         if (context instanceof OnListFragmentInteractionListener) {
             mListener = (OnListFragmentInteractionListener) context;
         } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
+            throw new RuntimeException(context.toString() + " must implement OnListFragmentInteractionListener");
         }
     }
 
@@ -98,21 +96,6 @@ public class RepositoryFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
     }
 
     @Override
@@ -125,5 +108,10 @@ public class RepositoryFragment extends Fragment {
     public void onPause() {
         super.onPause();
         BusProvider.getBus().unregister(this);
+    }
+
+    public interface OnListFragmentInteractionListener {
+        // TODO: Update argument type and name
+        void onListFragmentInteraction(Repository repository);
     }
 }
