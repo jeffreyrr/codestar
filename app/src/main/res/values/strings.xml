@@ -8,4 +8,5 @@
     <string name="title_activity_compare_repos">Compare Github Users</string>
     <string name="match_result_draw">Draw!</string>
     <string name="match_result_winner_template">{0} Wins!</string>
+    <string name="tabbar_title_template">{0} ({1})</string>
 </resources>

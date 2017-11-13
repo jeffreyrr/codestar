@@ -38,8 +38,8 @@ public class CompareReposActivity extends AppCompatActivity implements Repositor
     private static final String TAG = "[CompareReposActivity]";
     public static final String GITHUB_USER_LIST = "com.rogiers.jeffrey.GITHUB_USER_LIST";
 
-    private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
+    private TabLayout mTabLayout;
 
     private ArrayList<String> mUsers;
     private HashMap<String, Integer> mUserStars = new HashMap();
@@ -62,16 +62,16 @@ public class CompareReposActivity extends AppCompatActivity implements Repositor
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setAdapter(sectionsPagerAdapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
+        mTabLayout = (TabLayout) findViewById(R.id.tabs);
+        mTabLayout.setupWithViewPager(mViewPager);
 
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
+        mTabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
         if(mUsers.size() >= 2) {
             CircleImageView imageView1 = findViewById(R.id.photo_user_1);
@@ -114,6 +114,7 @@ public class CompareReposActivity extends AppCompatActivity implements Repositor
     @Subscribe
     public void onProcessMessage(Event.UserRepositories event){
         mUserStars.put(event.getUser(), event.getStars());
+        mTabLayout.setupWithViewPager(mViewPager);
         crownWinner(findWinner(mUsers, mUserStars));
     }
 
@@ -211,6 +212,10 @@ public class CompareReposActivity extends AppCompatActivity implements Repositor
 
         @Override
         public CharSequence getPageTitle(int position) {
+            if(mUserStars.containsKey(mUsers.get(position))){
+                return MessageFormat.format(getString(R.string.tabbar_title_template),
+                        mUsers.get(position), mUserStars.get(mUsers.get(position)));
+            }
             return mUsers.get(position);
         }
     }
