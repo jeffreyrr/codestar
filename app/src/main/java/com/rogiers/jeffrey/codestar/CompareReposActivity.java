@@ -191,7 +191,12 @@ public class CompareReposActivity extends AppCompatActivity implements Repositor
     protected void onResume() {
         super.onResume();
         BusProvider.getBus().register(this);
-        crownWinner(findWinner(mUsers, mUserStars));
+
+        if(findWinner(mUsers, mUserStars) < -1){
+            loadUserData();
+        } else {
+            crownWinner(findWinner(mUsers, mUserStars));
+        }
     }
 
     public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
