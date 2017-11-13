@@ -118,8 +118,8 @@ public class CompareReposActivity extends AppCompatActivity implements Repositor
     }
 
     public static Integer findWinner(ArrayList<String> users, HashMap<String, Integer> stars) {
-        if(stars.size() < 2) {
-            // minimum HashMap size requirements not met
+        if(users.size() < 2 || stars.size() < 2) {
+            // minimum size requirements not met
             return -2;
         }
 
