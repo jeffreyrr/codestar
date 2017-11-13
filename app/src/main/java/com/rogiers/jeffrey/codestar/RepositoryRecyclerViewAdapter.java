@@ -34,8 +34,8 @@ public class RepositoryRecyclerViewAdapter extends RecyclerView.Adapter<Reposito
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mRepositories.get(position);
-        holder.mIdView.setText("" + mRepositories.get(position).getWatchers());
-        holder.mContentView.setText(mRepositories.get(position).getName());
+        holder.mRepositoryView.setText(mRepositories.get(position).getName());
+        holder.mRepositoryStars.setText(Integer.toString(mRepositories.get(position).getWatchers()));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,20 +61,20 @@ public class RepositoryRecyclerViewAdapter extends RecyclerView.Adapter<Reposito
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
+        public final TextView mRepositoryView;
+        public final TextView mRepositoryStars;
         public Repository mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.id);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            mRepositoryView = (TextView) view.findViewById(R.id.repositoryName);
+            mRepositoryStars = (TextView) view.findViewById(R.id.repositoryStarsCount);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + mRepositoryView.getText() + "'";
         }
     }
 }

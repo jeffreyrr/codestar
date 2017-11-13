@@ -9,4 +9,6 @@
     <dimen name="profile_photo_border_thickness">3dp</dimen>
     <dimen name="versus_size">72dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+    <dimen name="cardview_margin">4dp</dimen>
+    <dimen name="cardview_radius">4dp</dimen>
 </resources>

@@ -27,7 +27,7 @@ import java.util.List;
  */
 public class RepositoryFragment extends Fragment {
 
-    private static final String TAG = "RepositoryFragment";
+    private static final String TAG = "[RepositoryFragment]";
     private static final String ARG_USER_NAME = "github_user_name";
 
     private int mColumnCount = 1;
@@ -76,7 +76,6 @@ public class RepositoryFragment extends Fragment {
         String user = event.getUser();
         if(user == mUser) {
             List<Repository> repositories = event.getRepositories();
-            // notify adapter of changes
             mAdapter.updateRepositoriesList(repositories);
             Log.d(TAG, user + " has " + repositories.size() + " repositories");
         }
@@ -111,7 +110,6 @@ public class RepositoryFragment extends Fragment {
     }
 
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onListFragmentInteraction(Repository repository);
     }
 }
