@@ -9,6 +9,8 @@ import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.service.RepositoryService;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -32,6 +34,14 @@ public class GithubDataFetcher extends AsyncTask<String, Void, Void> {
             repositories = null;
             e.printStackTrace();
         }
+
+        // sort by stars descending
+        Collections.sort(repositories, new Comparator<Repository>() {
+            @Override
+            public int compare(Repository o1, Repository o2) {
+                return o2.getWatchers() - o1.getWatchers();
+            }
+        });
 
         Event.UserRepositories event = new Event.UserRepositories(user, repositories);
         BusUtil.postOnMain(BusProvider.getBus(), event);
