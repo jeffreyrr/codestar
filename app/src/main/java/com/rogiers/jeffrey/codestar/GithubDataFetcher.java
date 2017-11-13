@@ -9,6 +9,7 @@ import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.service.RepositoryService;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -38,8 +39,7 @@ public class GithubDataFetcher extends AsyncTask<String, Void, Void> {
                 }
             });
         } catch (IOException e) {
-            repositories = null;
-            e.printStackTrace();
+            repositories = new ArrayList<>();
         }
 
         Event.UserRepositories event = new Event.UserRepositories(user, repositories);

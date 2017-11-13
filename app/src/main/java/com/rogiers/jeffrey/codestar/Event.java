@@ -19,10 +19,12 @@ public class Event {
         public UserRepositories(String user, List<Repository> repositories) {
             mUser = user.toLowerCase();
             mRepositoryList = repositories;
-
             mStars = 0;
-            for(Repository repo : mRepositoryList){
-                mStars += repo.getWatchers();
+
+            if(mRepositoryList.size() > 0) {
+                for (Repository repo : mRepositoryList) {
+                    mStars += repo.getWatchers();
+                }
             }
         }
 
